@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "yoavbls.pretty-ts-errors",
+    "ms-playwright.playwright",
+    "vitest.explorer",
+    "supabase.supabase-vscode",
+    "drizzle-team.drizzle-orm",
+    "editorconfig.editorconfig"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@invest-training/core": ["./packages/core/src"],
+      "@invest-training/core/*": ["./packages/core/src/*"],
+      "@invest-training/db": ["./packages/db/src"],
+      "@invest-training/db/*": ["./packages/db/src/*"],
+      "@invest-training/ui": ["./packages/ui/src"],
+      "@invest-training/ui/*": ["./packages/ui/src/*"],
+      "@invest-training/types": ["./packages/types/src"],
+      "@invest-training/types/*": ["./packages/types/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", ".next", "coverage"]
+}
