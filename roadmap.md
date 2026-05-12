@@ -12,10 +12,10 @@
 
 ### Step 0.1: 前提ツールのインストール
 
-- [ ] Node.js 22 LTS、pnpm、Git をインストール
-- [ ] Cursor をインストール、Claude Code CLI (`npm i -g @anthropic-ai/claude-code`) を導入
-- [ ] GitHub アカウント、Supabase アカウント、Vercel アカウントを作成
-- [ ] リポジトリ作成（private で OK）
+- [x] Node.js 22 LTS、pnpm、Git をインストール
+- [x] Cursor をインストール、Claude Code CLI (`npm i -g @anthropic-ai/claude-code`) を導入
+- [x] GitHub アカウント、Supabase アカウント、Vercel アカウントを作成
+- [x] リポジトリ作成（private で OK）
 
 ### Step 0.2: Claude Code の skills / plugins / MCP を調査して採用
 
@@ -24,25 +24,28 @@
 採用候補（2026年時点で実績あり）:
 
 **MCP サーバ（必須級）**
-- [ ] **Context7** — Next.js / Supabase / Drizzle の最新ドキュメントをセッションに注入。バージョン乖離を防げる。
-- [ ] **Supabase MCP** — スキーマ確認、SQL 実行、認証ユーザ管理を Claude Code から直接。
+
+- [x] **Context7** — Next.js / Supabase / Drizzle の最新ドキュメントをセッションに注入。バージョン乖離を防げる。
+- [x] **Supabase MCP** — スキーマ確認、SQL 実行、認証ユーザ管理を Claude Code から直接。
 - [ ] **Playwright MCP** — E2E テスト・UI 検証を Claude Code が実ブラウザで行える。
 - [ ] **GitHub MCP** — PR / Issue 管理をエージェントから。
 
 **Plugins / Skills**
-- [ ] `anthropics/claude-plugins-official` — Anthropic 公式の基準パック
-- [ ] `frontend-design` skill — UI を「AI っぽい平凡な見た目」から脱却させる（Duolingo風には必須）
+
+- [x] `anthropics/claude-plugins-official` — Anthropic 公式の基準パック
+- [x] `frontend-design` skill — UI を「AI っぽい平凡な見た目」から脱却させる（Duolingo風には必須）
 - [ ] `skill-creator` — プロジェクト固有 skill（後述）を作るためのメタ skill
 
 **最終ステップ: プロジェクト固有 skill を作る**
-- [ ] `.claude/skills/trading-domain/SKILL.md` を作成（用語・ドメインルール・出題設計の前提を集約）
-- [ ] `.claude/skills/duolingo-ui/SKILL.md` を作成（色・アニメーション・コンポーネント規約）
+
+- [x] `.claude/skills/trading-domain/SKILL.md` を作成（用語・ドメインルール・出題設計の前提を集約）
+- [x] `.claude/skills/duolingo-ui/SKILL.md` を作成（色・アニメーション・コンポーネント規約）
 
 ### Step 0.3: 設定ファイルの配置
 
-- [ ] `.mcp.json` をリポジトリに追加（このリポジトリの `.mcp.json.example` をコピー）
-- [ ] `CLAUDE.md` をルートに配置（このリポジトリのテンプレ参照）
-- [ ] `.claude/commands/` に頻用するスラッシュコマンドを定義（`/spec`, `/review`, `/migrate` など）
+- [x] `.mcp.json` をリポジトリに追加（このリポジトリの `.mcp.json.example` をコピー）
+- [x] `CLAUDE.md` をルートに配置（このリポジトリのテンプレ参照）
+- [x] `.claude/commands/` に頻用するスラッシュコマンドを定義（`/spec`, `/review`, `/migrate` など）
 
 **受け入れ条件:** `claude` 起動 → `/mcp` で Context7・Supabase・Playwright が緑表示。Claude が `frontend-design` skill を自動起動して UI 設計を提案できる。
 
@@ -52,15 +55,16 @@
 
 ### Step 1.1: Turborepo セットアップ
 
-- [ ] `pnpm create turbo@latest` でモノレポ作成
-- [ ] `apps/web` (Next.js 15 App Router), `packages/{core,db,ui,types,config}` を作成
-- [ ] ESLint / Prettier / Vitest / husky を共通化（`packages/config`）
-- [ ] GitHub Actions で lint → typecheck → test → build の CI
+- [x] `pnpm create turbo@latest` でモノレポ作成
+- [x] `apps/web` (Next.js 15 App Router), `packages/{core,db,ui,types,config}` を作成
+- [x] ESLint / Prettier / Vitest / husky を共通化（`packages/config`）
+- [x] GitHub Actions で lint → typecheck → test → build の CI
 - [ ] Vercel に `apps/web` をデプロイ（Hello World で OK）
 
 **受け入れ条件:** `pnpm dev` で localhost:3000 が起動、`pnpm test` が緑、Vercel に main ブランチが自動デプロイされる。
 
 **プロンプト例:**
+
 ```
 Turborepo モノレポを作って、apps/web (Next.js 15 App Router + TypeScript strict + Tailwind + shadcn/ui),
 packages/{core,db,ui,types,config} を配置してください。CLAUDE.md と .mcp.json は既存のものを使ってください。
@@ -80,6 +84,7 @@ packages/{core,db,ui,types,config} を配置してください。CLAUDE.md と .
 ### Step 2.2: スキーマ設計
 
 最初に必要なテーブル:
+
 - [ ] `profiles` (id, display_name, avatar_url, xp, current_streak, hearts, last_active_at, role)
 - [ ] `lessons` (id, slug, title, description, order, difficulty)
 - [ ] `units` (id, lesson_id, title, order)
@@ -101,6 +106,7 @@ packages/{core,db,ui,types,config} を配置してください。CLAUDE.md と .
 - [ ] Vitest でドメインロジック網羅テスト
 
 **プロンプト例:**
+
 ```
 docs/specs/srs.md にある仕様に従って packages/core/src/srs/ を実装してください。
 React や Next.js に依存しない純粋な TypeScript。テストを先に書いて、

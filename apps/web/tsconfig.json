@@ -1,0 +1,21 @@
+{
+  "extends": "../../packages/config/typescript/nextjs.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@invest-training/core": ["../../packages/core/src"],
+      "@invest-training/core/*": ["../../packages/core/src/*"],
+      "@invest-training/db": ["../../packages/db/src"],
+      "@invest-training/db/*": ["../../packages/db/src/*"],
+      "@invest-training/ui": ["../../packages/ui/src"],
+      "@invest-training/ui/*": ["../../packages/ui/src/*"],
+      "@invest-training/types": ["../../packages/types/src"],
+      "@invest-training/types/*": ["../../packages/types/src/*"]
+    },
+    "allowJs": true,
+    "noEmit": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

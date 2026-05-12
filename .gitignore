@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+dist/
+build/
+out/
+
+# Turbo
+.turbo/
+
+# Test / Coverage
+coverage/
+
+# Env files (never commit real secrets)
+.env
+.env.local
+.env.*.local
+
+# MCP config (contains API tokens)
+.mcp.json
+
+# Claude Code session state
+.claude/sessions/
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+*.swp
+*.swo
