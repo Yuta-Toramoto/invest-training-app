@@ -59,7 +59,7 @@
 - [x] `apps/web` (Next.js 15 App Router), `packages/{core,db,ui,types,config}` を作成
 - [x] ESLint / Prettier / Vitest / husky を共通化（`packages/config`）
 - [x] GitHub Actions で lint → typecheck → test → build の CI
-- [ ] Vercel に `apps/web` をデプロイ（Hello World で OK）
+- [x] Vercel に `apps/web` をデプロイ（Hello World で OK）
 
 **受け入れ条件:** `pnpm dev` で localhost:3000 が起動、`pnpm test` が緑、Vercel に main ブランチが自動デプロイされる。
 
