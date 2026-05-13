@@ -1,3 +1,4 @@
+import { TrpcProvider } from '@/components/providers/TrpcProvider';
 import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
 import './globals.css';
@@ -15,7 +16,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja" className={nunito.variable}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <TrpcProvider>{children}</TrpcProvider>
+      </body>
     </html>
   );
 }

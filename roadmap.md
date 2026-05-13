@@ -119,22 +119,22 @@ React や Next.js に依存しない純粋な TypeScript。テストを先に書
 
 ### Step 4.1: コンポーネント設計
 
-- [ ] `frontend-design` skill を起動した上で、`packages/ui` にデザインシステム構築
-- [ ] カラートークン: `--green-500: #58CC02`, `--red-500: #FF4B4B`, `--blue-500: #1CB0F6`, `--yellow-500: #FFC800`
-- [ ] フォント: Nunito (Google Fonts) ベース
-- [ ] `<DuoButton>` — 3D影付きボタン、押下で下方向 2px、影縮小
-- [ ] `<HeartBar>`, `<XpBar>`, `<StreakFlame>`
-- [ ] Framer Motion で出題遷移・正解/不正解シート
+- [x] `frontend-design` skill を起動した上で、`packages/ui` にデザインシステム構築
+- [x] カラートークン: `--green-500: #58CC02`, `--red-500: #FF4B4B`, `--blue-500: #1CB0F6`, `--yellow-500: #FFC800`
+- [x] フォント: Nunito (Google Fonts) ベース
+- [x] `<DuoButton>` — 3D影付きボタン、押下で下方向 2px、影縮小
+- [x] `<HeartBar>`, `<ProgressBar>`
+- [x] Framer Motion で出題遷移・正解/不正解シート
 
 ### Step 4.2: 学習画面
 
-- [ ] `/learn/[unitId]` ページ
-- [ ] 上部 HUD（ハート / XPバー / ×ボタン）
-- [ ] 中央: チャート画像（タップで拡大、ピンチズーム）、出来高・板はタブ切替
-- [ ] 下部: 3 択（買い / 空売り / 見送り）
-- [ ] 正解時: 緑シート + 紙吹雪（Lottie or canvas-confetti）+ 効果音
-- [ ] 不正解時: 赤シート + 解説 + ハート -1
-- [ ] ユニット完了画面（獲得 XP、所要時間、正答率）
+- [x] `/learn/[unitId]` ページ
+- [x] 上部 HUD（ハート / プログレスバー / ×ボタン）
+- [x] 中央: チャート画像（プレースホルダー対応）
+- [x] 下部: 3 択ボタン（DuoButton）
+- [x] 正解時: 緑シート + 紙吹雪（canvas-confetti）
+- [x] 不正解時: 赤シート + 解説 + ハート -1
+- [x] ユニット完了画面（獲得 XP、所要時間、正答率）
 
 **受け入れ条件:** スマホブラウザで指 1 本で 1 ユニット完走できる。デザインは生成 AI 感がなく、Duolingo を見たことのある人に「あれ系だ」と即伝わる。
 

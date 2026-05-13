@@ -1,2 +1,5 @@
-// 共通 UI コンポーネント — Phase 4 で DuoButton / HeartBar / XpBar 等を追加
-export {};
+export { DuoButton } from './DuoButton';
+export type { DuoButtonVariant } from './DuoButton';
+
+export { HeartBar } from './HeartBar';
+export { ProgressBar } from './ProgressBar';
