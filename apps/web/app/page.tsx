@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { Footer } from '@/components/Footer';
 import { HeartBar } from '@invest-training/ui';
 import Link from 'next/link';
 
@@ -56,7 +57,7 @@ export default async function HomePage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-lg px-4 py-6">
+      <main id="main-content" className="mx-auto max-w-lg px-4 py-6">
         {/* ハート回復バナー */}
         {needsHeartRecovery && (
           <Link
@@ -170,6 +171,7 @@ export default async function HomePage() {
           )}
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
