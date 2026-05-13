@@ -98,12 +98,12 @@ packages/{core,db,ui,types,config} を配置してください。CLAUDE.md と .
 
 ## Phase 3: コアドメインと API
 
-- [ ] `packages/core/src/xp/` に XP 計算ロジック（正解の難易度 × 速さボーナス）
-- [ ] `packages/core/src/streak/` にストリーク判定（前日アクセス基準、TZ 考慮）
-- [ ] `packages/core/src/srs/` に簡易 SRS（間隔反復）— 不正解問題を優先出題
-- [ ] tRPC ルーター: `question.getNext`, `question.submit`, `profile.me`, `lesson.list`
-- [ ] **ロジックは全て core に置き UI に書かない**（モバイル移植時に再利用するため）
-- [ ] Vitest でドメインロジック網羅テスト
+- [x] `packages/core/src/xp/` に XP 計算ロジック（正解の難易度 × 速さボーナス）
+- [x] `packages/core/src/streak/` にストリーク判定（前日アクセス基準、TZ 考慮）
+- [x] `packages/core/src/srs/` に簡易 SRS（間隔反復）— 不正解問題を優先出題
+- [x] tRPC ルーター: `question.getNext`, `question.submit`, `profile.me`, `lesson.list`
+- [x] **ロジックは全て core に置き UI に書かない**（モバイル移植時に再利用するため）
+- [x] Vitest でドメインロジック網羅テスト
 
 **プロンプト例:**
 
