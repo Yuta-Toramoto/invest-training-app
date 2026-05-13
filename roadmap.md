@@ -77,20 +77,20 @@ packages/{core,db,ui,types,config} を配置してください。CLAUDE.md と .
 
 ### Step 2.1: Supabase プロジェクト
 
-- [ ] 無料プランで Supabase プロジェクト作成
-- [ ] `@supabase/ssr` で Next.js の Auth 連携（Email + Google OAuth）
-- [ ] `packages/db` に Drizzle 設定、`drizzle-kit` で migration 管理
+- [x] 無料プランで Supabase プロジェクト作成
+- [x] `@supabase/ssr` で Next.js の Auth 連携（Email + Google OAuth）
+- [x] `packages/db` に Drizzle 設定、`drizzle-kit` で migration 管理
 
 ### Step 2.2: スキーマ設計
 
 最初に必要なテーブル:
 
-- [ ] `profiles` (id, display_name, avatar_url, xp, current_streak, hearts, last_active_at, role)
-- [ ] `lessons` (id, slug, title, description, order, difficulty)
-- [ ] `units` (id, lesson_id, title, order)
-- [ ] `questions` (id, unit_id, type, chart_image_url, order_book_image_url, volume_image_url, prompt, choices jsonb, correct_choice_id, explanation, tags text[], difficulty)
-- [ ] `attempts` (id, user_id, question_id, selected_choice_id, is_correct, time_taken_ms, answered_at)
-- [ ] RLS ポリシー: profiles は本人のみ更新、attempts は本人のみ閲覧・作成、admin role のみ questions を編集
+- [x] `profiles` (id, display_name, avatar_url, xp, current_streak, hearts, last_active_at, role)
+- [x] `lessons` (id, slug, title, description, order, difficulty)
+- [x] `units` (id, lesson_id, title, order)
+- [x] `questions` (id, unit_id, type, chart_image_url, order_book_image_url, volume_image_url, prompt, choices jsonb, correct_choice_id, explanation, tags text[], difficulty)
+- [x] `attempts` (id, user_id, question_id, selected_choice_id, is_correct, time_taken_ms, answered_at)
+- [x] RLS ポリシー: profiles は本人のみ更新、attempts は本人のみ閲覧・作成、admin role のみ questions を編集
 
 **受け入れ条件:** Supabase ダッシュボードで全テーブル確認可、ログインしたユーザの profile が自動作成される、RLS が有効。
 

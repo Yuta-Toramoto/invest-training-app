@@ -11,13 +11,19 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
-    "clean": "rm -rf dist"
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "clean": "rm -rf dist .drizzle"
   },
   "dependencies": {
-    "@invest-training/types": "workspace:*"
+    "@invest-training/types": "workspace:*",
+    "drizzle-orm": "^0.43.0",
+    "postgres": "^3.4.5"
   },
   "devDependencies": {
     "@invest-training/config": "workspace:*",
+    "@types/node": "^22.0.0",
+    "drizzle-kit": "^0.31.0",
     "eslint": "^9.0.0",
     "typescript": "^5.6.0"
   }

@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  /* Brand colors */
   --green-500: #58cc02;
   --green-600: #4aab00;
   --red-500: #ff4b4b;
@@ -13,4 +14,10 @@
   --yellow-600: #e6b400;
   --purple-500: #ce82ff;
   --orange-500: #ff9600;
+
+  /* UI tokens */
+  --background: #f7f7f7;
+  --foreground: #1d1d1d;
+  --muted-foreground: #777777;
+  --border: #e5e5e5;
 }
