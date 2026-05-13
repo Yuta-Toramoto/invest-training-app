@@ -29,13 +29,18 @@ export function selectNextQuestion(questionIds: string[], stats: QuestionStats[]
 
   if (incorrect.length > 0) {
     incorrect.sort((a, b) => a.correctCount / a.attemptCount - b.correctCount / b.attemptCount);
-    return incorrect[0]!.questionId;
+    const first = incorrect[0];
+    if (first) return first.questionId;
   }
 
   if (unanswered.length > 0) {
-    return unanswered[0]!;
+    const first = unanswered[0];
+    if (first) return first;
   }
 
   correct.sort((a, b) => a.correctCount / a.attemptCount - b.correctCount / b.attemptCount);
-  return correct[0]!.questionId;
+  const first = correct[0];
+  if (first) return first.questionId;
+
+  throw new Error('No question could be selected');
 }
