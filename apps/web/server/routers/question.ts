@@ -140,4 +140,37 @@ export const questionRouter = router({
         streakResult,
       };
     }),
+
+  getReview: protectedProcedure.query(async ({ ctx }) => {
+    const { data: incorrectAttempts } = await ctx.supabase
+      .from('attempts')
+      .select('question_id')
+      .eq('user_id', ctx.user.id)
+      .eq('is_correct', false)
+      .order('answered_at', { ascending: false })
+      .limit(20);
+
+    if (!incorrectAttempts || incorrectAttempts.length === 0) return null;
+
+    const candidateIds = [...new Set(incorrectAttempts.map((a) => a.question_id))];
+    const randomId = candidateIds[Math.floor(Math.random() * candidateIds.length)];
+    if (!randomId) return null;
+
+    const { data: question } = await ctx.supabase
+      .from('questions')
+      .select('id, type, chart_image_url, prompt, choices, difficulty')
+      .eq('id', randomId)
+      .single();
+
+    if (!question) return null;
+
+    return {
+      id: question.id,
+      type: question.type as 'chart' | 'order_book' | 'volume',
+      chartImageUrl: question.chart_image_url,
+      prompt: question.prompt,
+      choices: question.choices as { id: string; label: string }[],
+      difficulty: question.difficulty,
+    };
+  }),
 });
