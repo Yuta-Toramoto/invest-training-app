@@ -12,6 +12,7 @@
     "clean": "rm -rf .next dist coverage"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.96.0",
     "@invest-training/core": "workspace:*",
     "@invest-training/db": "workspace:*",
     "@invest-training/types": "workspace:*",

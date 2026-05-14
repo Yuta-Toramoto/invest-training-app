@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { createQuestion } from './actions';
+import { ChartGeneratorTab } from './ChartGeneratorTab';
 
 export default async function NewQuestionPage({
   searchParams,
@@ -33,6 +34,31 @@ export default async function NewQuestionPage({
           エラー: {decodeURIComponent(error)}
         </div>
       )}
+
+      {/* タブ切り替え */}
+      <div className="mb-6 flex rounded-xl border border-[var(--border)] bg-[var(--background)] p-1">
+        <a
+          href="?tab=manual"
+          className="flex-1 rounded-lg py-2 text-center text-sm font-bold text-[var(--muted-foreground)] hover:bg-white"
+        >
+          手動アップロード
+        </a>
+        <a
+          href="?tab=chart"
+          className="flex-1 rounded-lg bg-white py-2 text-center text-sm font-bold text-[var(--foreground)] shadow-sm"
+        >
+          チャートから自動生成 ✨
+        </a>
+      </div>
+
+      {/* チャート自動生成タブ */}
+      <ChartGeneratorTab allUnits={allUnits} />
+
+      <div className="my-8 flex items-center gap-3">
+        <div className="h-px flex-1 bg-[var(--border)]" />
+        <span className="text-xs text-[var(--muted-foreground)]">または手動で作成</span>
+        <div className="h-px flex-1 bg-[var(--border)]" />
+      </div>
 
       <form className="space-y-6">
         {/* ユニット選択 */}
