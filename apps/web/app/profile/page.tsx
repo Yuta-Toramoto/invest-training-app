@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
+import { GoalSettingModal } from '@/components/GoalSettingModal';
+import { getWeeklyXp } from '@invest-training/core';
 import Link from 'next/link';
 
 export default async function ProfilePage() {
@@ -6,13 +8,22 @@ export default async function ProfilePage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('display_name, xp, current_streak, hearts, created_at')
+    .select('display_name, xp, current_streak, hearts, created_at, weekly_goal_xp')
     .single();
 
   const { data: attempts } = await supabase
     .from('attempts')
-    .select('is_correct, answered_at')
+    .select('is_correct, answered_at, xp_earned')
     .order('answered_at', { ascending: false });
+
+  const weeklyXp = getWeeklyXp({
+    attempts: (attempts ?? []).map((a) => ({
+      xpEarned: a.xp_earned,
+      answeredAt: new Date(a.answered_at),
+    })),
+    now: new Date(),
+    tzOffsetMinutes: -540,
+  });
 
   const total = attempts?.length ?? 0;
   const correct = (attempts ?? []).filter((a) => a.is_correct).length;
@@ -99,6 +110,12 @@ export default async function ProfilePage() {
             </div>
           </div>
         </div>
+
+        {/* 週間目標 */}
+        <GoalSettingModal
+          currentWeeklyGoalXp={profile?.weekly_goal_xp ?? 100}
+          weeklyXp={weeklyXp}
+        />
 
         {/* 直近7日のアクティビティ */}
         <div className="rounded-2xl bg-white p-5 shadow-sm">

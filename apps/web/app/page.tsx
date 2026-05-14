@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { Footer } from '@/components/Footer';
+import { checkGoalProgress, getWeeklyXp } from '@invest-training/core';
 import { HeartBar } from '@invest-training/ui';
 import Link from 'next/link';
 
@@ -8,8 +9,22 @@ export default async function HomePage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('display_name, xp, current_streak, hearts')
+    .select('display_name, xp, current_streak, hearts, weekly_goal_xp')
     .single();
+
+  const { data: allAttempts } = await supabase.from('attempts').select('xp_earned, answered_at');
+
+  const weeklyXp = getWeeklyXp({
+    attempts: (allAttempts ?? []).map((a) => ({
+      xpEarned: a.xp_earned,
+      answeredAt: new Date(a.answered_at),
+    })),
+    now: new Date(),
+    tzOffsetMinutes: -540,
+  });
+
+  const weeklyGoalXp = profile?.weekly_goal_xp ?? 100;
+  const goalProgress = checkGoalProgress({ earnedXp: weeklyXp, goalXp: weeklyGoalXp });
 
   const { data: lessons } = await supabase
     .from('lessons')
@@ -58,6 +73,43 @@ export default async function HomePage() {
       </header>
 
       <main id="main-content" className="mx-auto max-w-lg px-4 py-6">
+        {/* 週間目標進捗バー */}
+        <div
+          className={`mb-4 rounded-2xl border-2 px-4 py-3 ${
+            goalProgress.isAchieved
+              ? 'border-[#3fa800] bg-[#d7ffb8]'
+              : 'border-[var(--border)] bg-white'
+          }`}
+          role="region"
+          aria-label="週間目標"
+        >
+          <div className="mb-2 flex items-center justify-between">
+            <span className="font-nunito text-sm font-bold text-[var(--foreground)]">
+              今週の目標
+            </span>
+            <span
+              className={`text-sm font-bold ${goalProgress.isAchieved ? 'text-[#3fa800]' : 'text-[var(--muted-foreground)]'}`}
+            >
+              {goalProgress.isAchieved ? '達成！🎉' : `${weeklyXp} / ${weeklyGoalXp} XP`}
+            </span>
+          </div>
+          <div
+            className="h-3 w-full overflow-hidden rounded-full bg-[var(--background)]"
+            role="progressbar"
+            aria-valuenow={goalProgress.progressPercent}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`週間目標達成率 ${goalProgress.progressPercent}%`}
+          >
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${
+                goalProgress.isAchieved ? 'bg-[#58cc02]' : 'bg-[#58cc02]'
+              }`}
+              style={{ width: `${goalProgress.progressPercent}%` }}
+            />
+          </div>
+        </div>
+
         {/* ハート回復バナー */}
         {needsHeartRecovery && (
           <Link

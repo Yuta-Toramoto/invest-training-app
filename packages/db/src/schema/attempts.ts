@@ -9,6 +9,7 @@ export const attempts = pgTable('attempts', {
     .references(() => questions.id, { onDelete: 'cascade' }),
   selectedChoiceId: text('selected_choice_id').notNull(),
   isCorrect: boolean('is_correct').notNull(),
+  xpEarned: integer('xp_earned').notNull().default(0),
   timeTakenMs: integer('time_taken_ms'),
   answeredAt: timestamp('answered_at', { withTimezone: true }).defaultNow().notNull(),
 });

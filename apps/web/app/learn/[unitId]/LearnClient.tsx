@@ -22,6 +22,7 @@ type SubmitResult = {
   explanation: string;
   xpGained: number;
   newTotalXp: number;
+  goalAchievedThisWeek: boolean;
 };
 
 type Phase = 'question' | 'feedback' | 'complete';
@@ -90,6 +91,16 @@ export function LearnClient({
       if (res.isCorrect) {
         setCorrectCount((c) => c + 1);
         fireConfetti();
+      }
+      if (res.goalAchievedThisWeek) {
+        setTimeout(() => {
+          confetti({
+            particleCount: 200,
+            spread: 120,
+            origin: { y: 0.5 },
+            colors: ['#58cc02', '#ffc800', '#1cb0f6', '#ff4b4b'],
+          });
+        }, 600);
       }
       setPhase('feedback');
     } catch {

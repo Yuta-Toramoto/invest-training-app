@@ -1,14 +1,30 @@
+import { getWeeklyXp } from '@invest-training/core';
+import { z } from 'zod';
 import { protectedProcedure, router } from '../trpc';
 
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
     const { data, error } = await ctx.supabase
       .from('profiles')
-      .select('id, display_name, xp, current_streak, hearts')
+      .select('id, display_name, xp, current_streak, hearts, weekly_goal_xp')
       .eq('id', ctx.user.id)
       .single();
 
     if (error || !data) return null;
+
+    const { data: weekAttempts } = await ctx.supabase
+      .from('attempts')
+      .select('xp_earned, answered_at')
+      .eq('user_id', ctx.user.id);
+
+    const weeklyXp = getWeeklyXp({
+      attempts: (weekAttempts ?? []).map((a) => ({
+        xpEarned: a.xp_earned,
+        answeredAt: new Date(a.answered_at),
+      })),
+      now: new Date(),
+      tzOffsetMinutes: -540,
+    });
 
     return {
       id: data.id,
@@ -16,6 +32,8 @@ export const profileRouter = router({
       xp: data.xp,
       currentStreak: data.current_streak,
       hearts: data.hearts,
+      weeklyGoalXp: data.weekly_goal_xp,
+      weeklyXp,
     };
   }),
 
@@ -64,6 +82,19 @@ export const profileRouter = router({
       recentActivity,
     };
   }),
+
+  setGoal: protectedProcedure
+    .input(
+      z.object({
+        weeklyGoalXp: z.union([z.literal(50), z.literal(100), z.literal(250)]),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.supabase
+        .from('profiles')
+        .update({ weekly_goal_xp: input.weeklyGoalXp })
+        .eq('id', ctx.user.id);
+    }),
 
   leaderboard: protectedProcedure.query(async ({ ctx }) => {
     const { data, error } = await ctx.supabase.rpc('get_weekly_leaderboard');

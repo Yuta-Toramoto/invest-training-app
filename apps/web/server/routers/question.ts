@@ -1,4 +1,4 @@
-import { calculateXp, selectNextQuestion, updateStreak } from '@invest-training/core';
+import { calculateXp, getWeeklyXp, selectNextQuestion, updateStreak } from '@invest-training/core';
 import type { QuestionStats } from '@invest-training/core';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
@@ -88,14 +88,6 @@ export const questionRouter = router({
 
       const isCorrect = input.selectedChoiceId === question.correct_choice_id;
 
-      await ctx.supabase.from('attempts').insert({
-        user_id: ctx.user.id,
-        question_id: input.questionId,
-        selected_choice_id: input.selectedChoiceId,
-        is_correct: isCorrect,
-        time_taken_ms: input.timeTakenMs,
-      });
-
       const xpResult = calculateXp({
         isCorrect,
         difficulty: question.difficulty,
@@ -104,9 +96,35 @@ export const questionRouter = router({
 
       const { data: profile } = await ctx.supabase
         .from('profiles')
-        .select('xp, current_streak, hearts, last_active_at')
+        .select('xp, current_streak, hearts, last_active_at, weekly_goal_xp')
         .eq('id', ctx.user.id)
         .single();
+
+      const { data: thisWeekAttempts } = await ctx.supabase
+        .from('attempts')
+        .select('xp_earned, answered_at')
+        .eq('user_id', ctx.user.id);
+
+      const now = new Date();
+      const tzOffsetMinutes = -540;
+
+      const weeklyXpBefore = getWeeklyXp({
+        attempts: (thisWeekAttempts ?? []).map((a) => ({
+          xpEarned: a.xp_earned,
+          answeredAt: new Date(a.answered_at),
+        })),
+        now,
+        tzOffsetMinutes,
+      });
+
+      await ctx.supabase.from('attempts').insert({
+        user_id: ctx.user.id,
+        question_id: input.questionId,
+        selected_choice_id: input.selectedChoiceId,
+        is_correct: isCorrect,
+        xp_earned: xpResult.total,
+        time_taken_ms: input.timeTakenMs,
+      });
 
       const currentXp = profile?.xp ?? 0;
       const newTotalXp = currentXp + xpResult.total;
@@ -114,8 +132,8 @@ export const questionRouter = router({
       const streakResult = updateStreak({
         currentStreak: profile?.current_streak ?? 0,
         lastActiveAt: profile?.last_active_at ? new Date(profile.last_active_at) : null,
-        now: new Date(),
-        tzOffsetMinutes: -540, // JST デフォルト（Phase 4 でユーザ設定化）
+        now,
+        tzOffsetMinutes,
       });
 
       const currentHearts = profile?.hearts ?? 5;
@@ -127,9 +145,13 @@ export const questionRouter = router({
           xp: newTotalXp,
           current_streak: streakResult.newStreak,
           hearts: newHearts,
-          last_active_at: new Date().toISOString(),
+          last_active_at: now.toISOString(),
         })
         .eq('id', ctx.user.id);
+
+      const weeklyGoalXp = profile?.weekly_goal_xp ?? 100;
+      const weeklyXpAfter = weeklyXpBefore + xpResult.total;
+      const goalAchievedThisWeek = weeklyXpBefore < weeklyGoalXp && weeklyXpAfter >= weeklyGoalXp;
 
       return {
         isCorrect,
@@ -138,6 +160,7 @@ export const questionRouter = router({
         xpGained: xpResult.total,
         newTotalXp,
         streakResult,
+        goalAchievedThisWeek,
       };
     }),
 
