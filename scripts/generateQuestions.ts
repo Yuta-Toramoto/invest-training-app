@@ -394,8 +394,8 @@ async function analyzeScenario(scenario: Scenario): Promise<AnalysisResult> {
       ma25Last: ma25.values.at(-1)?.value,
       ma75Last: ma75.values.at(-1)?.value,
       displayCandleCount: display.length,
-      chartSvgDataUri: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(chartSvg)}`,
-      orderBookSvgDataUri: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(obSvg)}`,
+      chartSvgDataUri: `data:image/svg+xml;base64,${Buffer.from(chartSvg).toString('base64')}`,
+      orderBookSvgDataUri: `data:image/svg+xml;base64,${Buffer.from(obSvg).toString('base64')}`,
     };
   } catch (e) {
     return { scenario, status: 'error', errorMessage: String(e) };

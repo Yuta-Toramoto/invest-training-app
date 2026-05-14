@@ -3,6 +3,7 @@ import { Footer } from '@/components/Footer';
 import { checkGoalProgress, getWeeklyXp } from '@invest-training/core';
 import { HeartBar } from '@invest-training/ui';
 import Link from 'next/link';
+import { logout } from './(auth)/logout/actions';
 
 export default async function HomePage() {
   const supabase = await createClient();
@@ -62,12 +63,21 @@ export default async function HomePage() {
               📈 トレ学
             </span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <span className="flex items-center gap-1 text-sm font-bold text-[#ffc800]">
               🔥 {profile?.current_streak ?? 0}
             </span>
             <span className="text-sm font-bold text-[#58cc02]">⚡ {profile?.xp ?? 0} XP</span>
             <HeartBar hearts={profile?.hearts ?? 5} />
+            <form action={logout}>
+              <button
+                type="submit"
+                className="rounded-lg px-2 py-1 text-xs font-bold text-[var(--muted-foreground)] hover:bg-[var(--background)]"
+                aria-label="ログアウト"
+              >
+                ログアウト
+              </button>
+            </form>
           </div>
         </div>
       </header>
