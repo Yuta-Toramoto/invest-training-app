@@ -214,26 +214,34 @@ export function LearnClient({
           className="flex flex-1 flex-col px-4 pb-4"
         >
           {/* Chart / image area */}
-          <div className="mb-4 space-y-2">
-            {currentQuestion.chartImageUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={currentQuestion.chartImageUrl}
-                alt="チャート（ローソク足・移動平均・出来高）"
-                className="w-full rounded-2xl shadow-sm"
-              />
-            ) : (
-              <div className="flex h-48 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 shadow-sm">
-                <span className="font-nunito text-4xl">📈</span>
-              </div>
-            )}
+          <div className="mb-4 flex gap-2">
+            {/* メインチャート */}
+            <div className={currentQuestion.orderBookImageUrl ? 'w-[65%]' : 'w-full'}>
+              {currentQuestion.chartImageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={currentQuestion.chartImageUrl}
+                  alt="チャート（ローソク足・移動平均・出来高）"
+                  className="h-full w-full rounded-xl object-contain shadow-sm"
+                  style={{ maxHeight: '220px' }}
+                />
+              ) : (
+                <div className="flex h-40 items-center justify-center rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 shadow-sm">
+                  <span className="text-4xl">📈</span>
+                </div>
+              )}
+            </div>
+            {/* 板情報 */}
             {currentQuestion.orderBookImageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={currentQuestion.orderBookImageUrl}
-                alt="板情報"
-                className="w-full rounded-2xl shadow-sm"
-              />
+              <div className="w-[35%]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={currentQuestion.orderBookImageUrl}
+                  alt="板情報"
+                  className="h-full w-full rounded-xl object-contain shadow-sm"
+                  style={{ maxHeight: '220px' }}
+                />
+              </div>
             )}
           </div>
 
