@@ -12,6 +12,7 @@ type Question = {
   id: string;
   type: 'chart' | 'order_book' | 'volume';
   chartImageUrl: string | null;
+  orderBookImageUrl: string | null;
   prompt: string;
   choices: { id: string; label: string }[];
   difficulty: number;
@@ -213,18 +214,26 @@ export function LearnClient({
           className="flex flex-1 flex-col px-4 pb-4"
         >
           {/* Chart / image area */}
-          <div className="relative mb-4 overflow-hidden rounded-2xl bg-white shadow-sm">
+          <div className="mb-4 space-y-2">
             {currentQuestion.chartImageUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={currentQuestion.chartImageUrl}
-                alt="チャート"
-                className="h-52 w-full object-cover"
+                alt="チャート（ローソク足・移動平均・出来高）"
+                className="w-full rounded-2xl shadow-sm"
               />
             ) : (
-              <div className="flex h-52 items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
+              <div className="flex h-48 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 shadow-sm">
                 <span className="font-nunito text-4xl">📈</span>
               </div>
+            )}
+            {currentQuestion.orderBookImageUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={currentQuestion.orderBookImageUrl}
+                alt="板情報"
+                className="w-full rounded-2xl shadow-sm"
+              />
             )}
           </div>
 

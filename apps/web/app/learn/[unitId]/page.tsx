@@ -18,7 +18,7 @@ export default async function LearnPage({ params }: Props) {
 
   const { data: questions } = await supabase
     .from('questions')
-    .select('id, type, chart_image_url, prompt, choices, difficulty')
+    .select('id, type, chart_image_url, order_book_image_url, prompt, choices, difficulty')
     .eq('unit_id', unitId)
     .order('created_at');
 
@@ -33,6 +33,7 @@ export default async function LearnPage({ params }: Props) {
     id: q.id,
     type: q.type as 'chart' | 'order_book' | 'volume',
     chartImageUrl: q.chart_image_url,
+    orderBookImageUrl: q.order_book_image_url,
     prompt: q.prompt,
     choices: q.choices as { id: string; label: string }[],
     difficulty: q.difficulty,

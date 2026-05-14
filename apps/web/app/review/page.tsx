@@ -48,7 +48,7 @@ export default async function ReviewPage() {
 
   const { data: question } = await supabase
     .from('questions')
-    .select('id, unit_id, type, chart_image_url, prompt, choices, difficulty')
+    .select('id, unit_id, type, chart_image_url, order_book_image_url, prompt, choices, difficulty')
     .eq('id', randomId)
     .single();
 
@@ -68,6 +68,7 @@ export default async function ReviewPage() {
     id: question.id,
     type: question.type as 'chart' | 'order_book' | 'volume',
     chartImageUrl: question.chart_image_url,
+    orderBookImageUrl: question.order_book_image_url,
     prompt: question.prompt,
     choices: question.choices as { id: string; label: string }[],
     difficulty: question.difficulty,
