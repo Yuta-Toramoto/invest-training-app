@@ -4,7 +4,6 @@ import { createClient } from '@/lib/supabase/server';
 import { fetchCandles } from '@/lib/market/fetchCandles';
 import { generateChartSvg } from '@/lib/market/generateChartSvg';
 import { generateOrderBookSvg } from '@/lib/market/generateOrderBookSvg';
-import { generateExplanation } from '@/lib/ai/generateExplanation';
 import { calculateMA, ORDER_BOOK_PATTERNS } from '@invest-training/core';
 import { redirect } from 'next/navigation';
 
@@ -99,6 +98,7 @@ export async function createChartQuestion(formData: FormData): Promise<void> {
   const orderBookPatternName = formData.get('orderBookPattern') as string;
   const unitId = formData.get('unitId') as string;
   const correctChoiceId = formData.get('correctChoiceId') as string;
+  const explanation = (formData.get('explanation') as string | null) ?? '';
   const difficulty = parseInt(formData.get('difficulty') as string, 10) || 3;
   const tagsRaw = formData.get('tags') as string;
   const tags = tagsRaw
@@ -116,7 +116,6 @@ export async function createChartQuestion(formData: FormData): Promise<void> {
   const allCandles = await fetchCandles(symbol, timeframe, fromDate, toDate);
   const endTs = endDatetime.getTime();
   const displayCandles = allCandles.filter((c) => c.timestamp <= endTs).slice(-DISPLAY_CANDLES);
-  const resultCandles = allCandles.filter((c) => c.timestamp > endTs).slice(0, RESULT_CANDLES);
 
   const ma5 = calculateMA(displayCandles, 5);
   const ma25 = calculateMA(displayCandles, 25);
@@ -145,17 +144,6 @@ export async function createChartQuestion(formData: FormData): Promise<void> {
     uploadSvg(chartSvg, 'chart'),
     uploadSvg(orderBookSvg, 'orderbook'),
   ]);
-
-  // Claude API で解説生成
-  const explanation = await generateExplanation({
-    symbol,
-    timeframe,
-    candles: displayCandles,
-    mas: [ma5, ma25, ma75],
-    orderBook: pattern,
-    correctChoiceId,
-    resultCandles,
-  });
 
   const prompt = `${symbol}の${timeframe === '5m' ? '5分足' : '1分足'}チャートです。この後30分で株価はどうなるでしょうか？`;
 

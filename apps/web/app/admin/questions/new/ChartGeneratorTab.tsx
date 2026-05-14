@@ -19,6 +19,7 @@ export function ChartGeneratorTab({ allUnits }: { allUnits: Unit[] }) {
   const [orderBookPattern, setOrderBookPattern] = useState(ORDER_BOOK_PATTERNS[0]!.patternName);
   const [unitId, setUnitId] = useState(allUnits[0]?.unitId ?? '');
   const [correctChoiceId, setCorrectChoiceId] = useState<'a' | 'b' | 'c'>('a');
+  const [explanation, setExplanation] = useState('');
   const [difficulty, setDifficulty] = useState(3);
   const [tags, setTags] = useState('');
 
@@ -50,6 +51,7 @@ export function ChartGeneratorTab({ allUnits }: { allUnits: Unit[] }) {
     fd.set('orderBookPattern', orderBookPattern);
     fd.set('unitId', unitId);
     fd.set('correctChoiceId', correctChoiceId);
+    fd.set('explanation', explanation);
     fd.set('difficulty', String(difficulty));
     fd.set('tags', tags);
     startSubmit(async () => {
@@ -219,6 +221,23 @@ export function ChartGeneratorTab({ allUnits }: { allUnits: Unit[] }) {
 
           <div>
             <label className="mb-1.5 block text-sm font-bold text-[var(--foreground)]">
+              解説文<span className="ml-1 text-[#ff4b4b]">*</span>
+            </label>
+            <textarea
+              value={explanation}
+              onChange={(e) => setExplanation(e.target.value)}
+              required
+              rows={4}
+              placeholder="Claude Code に「この問題の解説文を書いて」と依頼してコピー&ペーストしてください"
+              className="w-full rounded-xl border border-[var(--border)] px-4 py-3 text-sm focus:border-[#58cc02] focus:outline-none"
+            />
+            <p className="mt-1 text-xs text-[var(--muted-foreground)]">
+              プレビューのチャート情報をもとに Claude Code で生成した解説を貼り付けてください
+            </p>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-sm font-bold text-[var(--foreground)]">
               難易度
             </label>
             <div className="flex items-center gap-4">
@@ -246,16 +265,12 @@ export function ChartGeneratorTab({ allUnits }: { allUnits: Unit[] }) {
             />
           </div>
 
-          <div className="rounded-xl bg-[var(--background)] px-4 py-3 text-xs text-[var(--muted-foreground)]">
-            ※ 解説文は登録時に AI が自動生成します（約5〜10秒）
-          </div>
-
           <button
             onClick={handleSubmit}
-            disabled={isSubmitting || !unitId}
+            disabled={isSubmitting || !unitId || !explanation.trim()}
             className="font-nunito w-full rounded-xl bg-[#58cc02] py-3 text-sm font-bold text-white shadow-[0_4px_0_#3fa800] transition-all active:translate-y-[4px] active:shadow-none disabled:opacity-50"
           >
-            {isSubmitting ? 'AI解説生成中・登録中...' : '問題を登録する'}
+            {isSubmitting ? '登録中...' : '問題を登録する'}
           </button>
         </>
       )}
