@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { HeartRecoveryTracker } from '@/components/HeartRecoveryTracker';
 import Link from 'next/link';
 import { LearnClient } from '../learn/[unitId]/LearnClient';
 
@@ -74,6 +75,7 @@ export default async function ReviewPage() {
 
   return (
     <div>
+      <HeartRecoveryTracker heartsBefore={profile?.hearts ?? 5} />
       <div className="bg-[#fff8e6] px-4 py-2 text-center text-sm font-bold text-[#ff9600]">
         ❤️‍🩹 ハート回復モード — 正解で +1 回復
       </div>

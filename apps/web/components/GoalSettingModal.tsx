@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
+import { useAnalytics } from '@/lib/hooks/useAnalytics';
 import { DuoButton } from '@invest-training/ui';
 
 const WEEKLY_GOAL_OPTIONS = [50, 100, 250] as const;
@@ -22,9 +23,14 @@ export function GoalSettingModal({ currentWeeklyGoalXp, weeklyXp }: Props) {
     isWeeklyGoalOption(currentWeeklyGoalXp) ? currentWeeklyGoalXp : 100,
   );
   const backdropRef = useRef<HTMLDivElement>(null);
+  const { capture } = useAnalytics();
 
   const setGoalMutation = trpc.profile.setGoal.useMutation({
     onSuccess: () => {
+      capture({
+        name: 'goal_setting_changed',
+        props: { from_xp: currentWeeklyGoalXp, to_xp: selected },
+      });
       setOpen(false);
       window.location.reload();
     },

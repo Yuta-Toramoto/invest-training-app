@@ -1,4 +1,5 @@
 import { TrpcProvider } from '@/components/providers/TrpcProvider';
+import { PostHogProvider } from '@/components/providers/PostHogProvider';
 import type { Metadata, Viewport } from 'next';
 import { Nunito } from 'next/font/google';
 import './globals.css';
@@ -33,7 +34,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           メインコンテンツへスキップ
         </a>
-        <TrpcProvider>{children}</TrpcProvider>
+        <PostHogProvider>
+          <TrpcProvider>{children}</TrpcProvider>
+        </PostHogProvider>
       </body>
     </html>
   );

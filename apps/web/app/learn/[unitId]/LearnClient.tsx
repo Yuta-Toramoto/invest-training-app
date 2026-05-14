@@ -6,6 +6,7 @@ import confetti from 'canvas-confetti';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
+import { useAnalytics } from '@/lib/hooks/useAnalytics';
 
 type Question = {
   id: string;
@@ -54,6 +55,7 @@ export function LearnClient({
   const [correctCount, setCorrectCount] = useState(0);
 
   const submitMutation = trpc.question.submit.useMutation();
+  const { capture } = useAnalytics();
 
   const currentQuestion = questions[idx];
   const isLast = idx === questions.length - 1;
@@ -101,16 +103,34 @@ export function LearnClient({
             colors: ['#58cc02', '#ffc800', '#1cb0f6', '#ff4b4b'],
           });
         }, 600);
+        capture({ name: 'weekly_goal_achieved', props: { goal_xp: 0, weekly_xp: 0 } });
       }
+      capture({
+        name: 'question_answered',
+        props: {
+          is_correct: res.isCorrect,
+          difficulty: currentQuestion.difficulty,
+          xp_gained: res.xpGained,
+        },
+      });
       setPhase('feedback');
     } catch {
       // ネットワークエラー時は再試行可能な状態に戻す
       setSelected(null);
     }
-  }, [selected, currentQuestion, startTime, submitMutation, fireConfetti]);
+  }, [selected, currentQuestion, startTime, submitMutation, fireConfetti, capture]);
 
   const handleNext = useCallback(() => {
     if (isLast) {
+      const elapsed = Math.round((Date.now() - sessionStart) / 1000);
+      capture({
+        name: 'unit_completed',
+        props: {
+          accuracy_pct: Math.round((correctCount / questions.length) * 100),
+          elapsed_sec: elapsed,
+          question_count: questions.length,
+        },
+      });
       setPhase('complete');
     } else {
       setIdx((i) => i + 1);
@@ -118,7 +138,7 @@ export function LearnClient({
       setResult(null);
       setPhase('question');
     }
-  }, [isLast]);
+  }, [isLast, sessionStart, correctCount, questions.length, capture]);
 
   if (phase === 'complete') {
     const elapsed = Math.round((Date.now() - sessionStart) / 1000);
