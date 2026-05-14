@@ -165,7 +165,7 @@ React や Next.js に依存しない純粋な TypeScript。テストを先に書
 
 - [x] アクセシビリティ（スキップリンク・ARIA ラベル・フォーカスリング）
 - [x] PWA 化（manifest.json・アイコン生成・standalone 表示）
-- [ ] アナリティクス（PostHog or Plausible 無料枠）
+- [x] アナリティクス（PostHog or Plausible 無料枠）
 - [x] エラーモニタリング（Sentry — DSN 設定待ち）
 - [x] **法務確認**: /terms ページ（免責文・利用規約・教育目的表記）・フッター免責文
 - [x] プライバシーポリシー（/terms に統合）
